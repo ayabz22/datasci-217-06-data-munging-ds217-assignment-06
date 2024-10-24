@@ -1,3 +1,6 @@
+import pandas as pd
+import numpy as np
+from scipy import stats
 
 #load the messy data
 df = pd.read_csv('messy_population_data.csv') 
@@ -12,6 +15,12 @@ def fill_nan(df):
 
     if 'gender' in df.columns:
         df['gender'].fillna(df['gender'].mode()[0], inplace=True)
+        
+    if 'year' in df.columns:
+        df['year'].fillna(df['year'].median(), inplace=True)  
+
+    if 'population' in df.columns:
+        df['population'].fillna(df['population'].median(), inplace=True)
     return df 
 
 # Remove duplicate rows
@@ -42,7 +51,10 @@ def inconsistent_categories(df):
 
 # fix date issue
 def remove_future_dates(df):
-    df = df[df['year'] <= 2024] 
+    future_dates = df[df['year'] > 2024]  # Track future date rows
+    df = df[df['year'] <= 2024]
+    print("\nFuture Dates Removal Summary:")
+    print(f"Number of rows with future dates removed: {len(future_dates)}")
     return df
 
 #remove any outliers
@@ -52,3 +64,34 @@ def remove_outliers(df, threshold=3):
     df = df[(z_scores < threshold).all(axis=1)]
     return df
 
+#apply the functions 
+def clean_data(df):
+
+    df = fill_nan(df)
+    df = remove_duplicates(df)
+    df = fix_data_types(df)
+    df = inconsistent_categories(df)
+    df = remove_future_dates(df)
+    df = remove_outliers(df)
+
+    return df
+
+def save_data(df, output_filename):
+    df.to_csv(output_filename, index=False)
+    print(f"Cleaned data saved to {output_filename}")
+
+def main():
+    input_filename = 'messy_population_data.csv'
+    output_filename = 'cleaned_population_data.csv'
+
+    df = pd.read_csv(input_filename)
+    df_cleaned = clean_data(df)
+    save_data(df_cleaned, output_filename)
+
+    # Summary statistics of the cleaned data
+    clean_summary = df_cleaned.describe(include='all')
+    print("\nSummary statistics for the cleaned data:")
+    print(clean_summary)
+
+if __name__ == "__main__":
+    main()
