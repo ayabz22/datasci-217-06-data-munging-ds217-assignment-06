@@ -112,3 +112,34 @@ if __name__ == '__main__':
 
     # print("\nSample of messy data:")
     # print(df_messy.sample(10))
+
+    df = pd.read_csv('messy_population_data.csv')
+
+    # Hint: Uncomment for insights
+    print("\nClean dataset info:")
+    print(df_clean.info())
+
+    print("\nMessy dataset info:")
+    print(df_messy.info())
+
+    print("\nSample of messy data:")
+    print(df_messy.sample(10))
+
+    print(df_messy.nunique())
+
+    print(df_messy.mean(numeric_only=True))
+ 
+    print(df_messy.isnull().sum())
+
+    print(df_messy.describe())
+
+    duplicates = df_messy.duplicated().sum()
+
+    print(f"Number of duplicate rows: {duplicates}")
+
+    print(df.dtypes)
+
+    min_year = 1900
+    max_year = 2024
+    invalid_years = df[(df['year'] < min_year) | (df['year'] > max_year)]
+    print(invalid_years)
