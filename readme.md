@@ -23,7 +23,7 @@
    - Description: There are missing values as NaN
    - Affected Column(s): income groups (6306), age (6223), gender (5907)
    - Example: Row 6306 has NaN in income_groups, Row 6223 has a NaN in age
-   - Potential Impact: If left uncleaned they can affect our conclusions because it can result in a  
+   - Potential Impact: If left uncleaned they can affect our conclusions because it can result in a 
      skew 
 
 2. **Duplicates**
@@ -82,7 +82,7 @@
     ```python
     df_messy_cleaned = df_messy.drop_duplicates()
     ```
--**Justification**: Duplicates need to be removed because they are not necessary and only will skew the data and lead to misleading conclusions. 
+-**Justification**: Duplicates need to be removed because they are not necessary and only will skew the data and lead to misleading conclusions. We assume that we only need one row and not all of them. 
 
 -**Impact**: 2950 rows were deleted.  
 
@@ -96,7 +96,7 @@
     ```
 -**Justification**: If we don't have the correct data type this will mess up our analysis. 
 
--**Impact**: Now the variables are in their correct data type. 
+-**Impact**: Now the variables are in their correct data type.
 
 ### Issue 4: Inconsistent Values 
 
@@ -107,7 +107,7 @@
     ```
 -**Justification**: This ensures that our dataset is consistent and readable to the audience thus those typos had to be replaced
 
--**Impact**: This affected the gender and income_groups column as the typo got replaced with the correct income group and 3s were removed. 
+-**Impact**: This affected the gender and income_groups column as the typo got replaced with the correct income group and 3s were removed. We assume that there are only 4 categories in income_groups and 2 in gender. 
 
 ### Issue 5: Date Issues
 
@@ -118,7 +118,7 @@
     ```
 -**Justification**: This ensures that our dataset is consistent with the present time and doesnt have future dates
 
--**Impact**: Because of this several rows were removed 
+-**Impact**: Because of this several rows were removed. We assume the acceptable years are ones that are below 2024. 
 
 ### Issue 6: Outliers
 
